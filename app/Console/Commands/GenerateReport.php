@@ -27,13 +27,11 @@ class GenerateReport extends Command
      */
     public function handle()
     {
-        $students=Student::where("created_at", now()->subDay())->get();
+        $students=Student::where("created_at", ">=", now()->subDay())->get();
         $report= $students->map(function(Student $student){
             return [ 'id' => $student->id, 'name' => $student->name, 'email' => $student->email];
         });
 
-        foreach($report as $student){
-            LOG::info($student);
-        }
+        Log::info('Report: Students registered in the last day:', $report->toArray());
     }
 }
