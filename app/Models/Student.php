@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Important for Sanctum
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; // Important for Sanctum
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 class Student extends Authenticatable // Extend Authenticatable
 {
@@ -41,5 +43,12 @@ class Student extends Authenticatable // Extend Authenticatable
         // although for now we don't have any specific columns on the pivot.
         return $this->belongsToMany(Course::class, 'course_student')
                     ->withTimestamps(); // Adds created_at/updated_at to pivot table
+    }
+
+    #[Scope]
+    protected function overloaded(Builder $query): void{
+        $query->whereHas('courses', function($q){
+
+        },'>',4);
     }
 }
