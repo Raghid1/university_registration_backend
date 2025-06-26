@@ -49,6 +49,10 @@ class Student extends Authenticatable // Extend Authenticatable
     protected function overloaded(Builder $query): void{
         $query->whereHas('courses', function($q){
 
-        },'>',4);
+        },'>=',3);
     }
+    // public function scopeOverloaded(Builder $query): void
+    // {
+    //     $query->has('courses', '>=', 3);
+    // }
 }

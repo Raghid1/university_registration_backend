@@ -11,4 +11,5 @@ interface StudentRepositoryInterface extends BaseRepositoryInterface
     public function getCourses(int $studentId): Collection;
     public function registerCourse(int $studentId, int $courseId): bool;
     public function unregisterCourse(int $studentId, int $courseId): bool;
+    public function getOverloadedStudents(): Collection;
 }

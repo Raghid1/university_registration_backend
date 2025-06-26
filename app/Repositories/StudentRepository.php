@@ -94,4 +94,9 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
             $course->where('name','math');
         })->get();
     }
+
+    public function getOverloadedStudents(): Collection
+    {
+        return $this->model->overloaded()->get();
+    }
 }
