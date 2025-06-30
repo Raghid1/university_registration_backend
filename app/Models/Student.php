@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; // Important for Sanctum
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Student extends Authenticatable // Extend Authenticatable
 {
@@ -51,8 +52,10 @@ class Student extends Authenticatable // Extend Authenticatable
 
         },'>=',3);
     }
-    // public function scopeOverloaded(Builder $query): void
-    // {
-    //     $query->has('courses', '>=', 3);
-    // }
+
+    protected function name(): Attribute{
+        return Attribute::make(
+            get: fn(string $value) => ucfirst($value),
+        );
+    }
 }
