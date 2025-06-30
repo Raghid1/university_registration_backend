@@ -24,6 +24,7 @@ class Student extends Authenticatable // Extend Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
     ];
 
     /**
@@ -71,6 +72,7 @@ class Student extends Authenticatable // Extend Authenticatable
             get: fn(mixed $value, array $attributes) => new Infos(
                 $attributes['name'],
                 $attributes['email'],
+                $attributes['phone_number'],
             )
             );
     }

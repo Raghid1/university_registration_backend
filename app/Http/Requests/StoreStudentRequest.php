@@ -25,6 +25,7 @@ class StoreStudentRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:students,email',
             'password' => 'required|string|min:8|confirmed', // 'confirmed' checks for 'password_confirmation' field
+            'phone_number' => 'nullable|string|regex:/^[0-9+\-\s()]{8,20}$/',
         ];
     }
 }
