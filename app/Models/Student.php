@@ -58,4 +58,10 @@ class Student extends Authenticatable // Extend Authenticatable
             get: fn(string $value) => ucfirst($value),
         );
     }
+
+    protected function email(): Attribute{
+        return Attribute::make(
+            set: fn(string $value) => lcfirst($value),
+        );
+    }
 }
