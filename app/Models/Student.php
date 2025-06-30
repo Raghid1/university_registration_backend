@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens; // Important for Sanctum
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\ValueObjects\Infos;
 
 class Student extends Authenticatable // Extend Authenticatable
 {
@@ -63,5 +64,14 @@ class Student extends Authenticatable // Extend Authenticatable
         return Attribute::make(
             set: fn(string $value) => lcfirst($value),
         );
+    }
+
+    protected function infos():Attribute{
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => new Infos(
+                $attributes['name'],
+                $attributes['email'],
+            )
+            );
     }
 }
