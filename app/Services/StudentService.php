@@ -9,6 +9,7 @@ use App\Services\Interfaces\StudentServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash; // For password hashing
 use Illuminate\Support\Facades\Log; // For logging errors/information
+use App\Events\CourseMaxCapacity;
 
 class StudentService implements StudentServiceInterface
 {
@@ -97,6 +98,10 @@ class StudentService implements StudentServiceInterface
 
         // If all checks pass, proceed with registration
         $registered = $this->studentRepository->registerCourse($studentId, $courseId);
+
+        if($course->students->count()>=$course->max_students){
+            CourseMaxCapacity::dispatch($course);
+        }
 
         if ($registered) {
             // Refresh models to get the updated relationships count
