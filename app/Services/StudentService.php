@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash; // For password hashing
 use Illuminate\Support\Facades\Log; // For logging errors/information
 use App\Events\CourseMaxCapacity;
+use App\Events\StudentRegistration;
 
 class StudentService implements StudentServiceInterface
 {
@@ -36,7 +37,9 @@ class StudentService implements StudentServiceInterface
     {
         // Hash the password before storing it
         $data['password'] = Hash::make($data['password']);
-        return $this->studentRepository->create($data);
+        $student = $this->studentRepository->create($data);
+        event(new StudentRegistration($student));
+        return $student;
     }
 
     public function updateStudent(int $id, array $data): ?Student
