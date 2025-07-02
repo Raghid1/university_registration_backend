@@ -20,7 +20,7 @@ class GenerateReport extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Display students registered in the last day';
 
     /**
      * Execute the console command.
