@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => 'student',
+        'passwords' => 'students',
     ],
 
     /*
@@ -41,13 +41,17 @@ return [
             'provider' => 'users',
         ],
         'student' => [
-            'driver' => 'sanctum',
+            'driver' => 'jwt',
             'provider' => 'students',
         ],
 
         'professor' => [
-            'driver' => 'sanctum',
+            'driver' => 'jwt',
             'provider' => 'professors',
+        ],
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'students',
         ],
     ],
 

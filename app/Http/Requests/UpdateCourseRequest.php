@@ -10,11 +10,11 @@ class UpdateCourseRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        // Only authenticated students (acting as 'admins' for now) can update courses.
-        return auth('sanctum')->check();
-    }
+    // public function authorize(): bool
+    // {
+    //     // Only authenticated students (acting as 'admins' for now) can update courses.
+    //     return auth('sanctum')->check();
+    // }
 
     /**
      * Get the validation rules that apply to the request.

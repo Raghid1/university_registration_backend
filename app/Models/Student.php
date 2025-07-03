@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\ValueObjects\Infos;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Student extends Authenticatable // Extend Authenticatable
+class Student extends Authenticatable implements JWTSubject // Extend Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens; // Use HasApiTokens
 
@@ -20,6 +21,18 @@ class Student extends Authenticatable // Extend Authenticatable
      *
      * @var array<int, string>
      */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return an array with custom claims to be added to the JWT token.
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     protected $fillable = [
         'name',
         'email',

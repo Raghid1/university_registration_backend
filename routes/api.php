@@ -26,7 +26,7 @@ Route::post('/login', [StudentAuthController::class, 'login']);
 
 // --- Protected Routes (Authentication Required via Sanctum) ---
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:student')->group(function () {
 
     // Student Authentication
     Route::post('/logout', [StudentAuthController::class, 'logout']);

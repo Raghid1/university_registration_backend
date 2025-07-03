@@ -9,12 +9,12 @@ class StoreCourseRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        // For simplicity, let's assume any authenticated student can create a course for now.
-        // In a real app, this would be restricted to admin/instructor roles.
-        return auth('sanctum')->check();
-    }
+    // public function authorize(): bool
+    // {
+    //     // For simplicity, let's assume any authenticated student can create a course for now.
+    //     // In a real app, this would be restricted to admin/instructor roles.
+    //     return auth('sanctum')->check();
+    // }
 
     /**
      * Get the validation rules that apply to the request.

@@ -88,7 +88,7 @@ class StudentController extends Controller
     public function update(UpdateStudentRequest $request, int $id): JsonResponse
     {
         // Ensure the authenticated student can only update their own record
-        if (auth('sanctum')->id() !== $id) {
+        if (auth('student')->id() !== $id) {
             return Response::json(['message' => 'Unauthorized to update this student record.'], 403); // 403 Forbidden
         }
 
@@ -175,7 +175,7 @@ class StudentController extends Controller
     public function registerForCourse(CourseRegistrationRequest $request, int $studentId): JsonResponse
     {
         // Ensure the authenticated student is the one trying to register
-        if (auth('sanctum')->id() !== $studentId) {
+        if (auth('student')->id() !== $studentId) {
             return Response::json(['message' => 'Unauthorized to register for another student.'], 403);
         }
 
@@ -219,7 +219,7 @@ class StudentController extends Controller
     public function unregisterFromCourse(Request $request, int $studentId, int $courseId): JsonResponse
     {
         // Ensure the authenticated student is the one trying to unregister
-        if (auth('sanctum')->id() !== $studentId) {
+        if (auth('student')->id() !== $studentId) {
             return Response::json(['message' => 'Unauthorized to unregister for another student.'], 403);
         }
 

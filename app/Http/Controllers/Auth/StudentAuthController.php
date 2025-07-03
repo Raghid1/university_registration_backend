@@ -9,6 +9,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class StudentAuthController extends Controller
 {
@@ -32,7 +36,8 @@ class StudentAuthController extends Controller
 
             if ($student) {
                 // Optionally log the student in immediately after registration
-                $token = $this->studentService->authenticateStudent($request->email, $request->password);
+                // $token = $this->studentService->authenticateStudent($request->email, $request->password);
+                $token = JWTAuth::fromUser($student);
                 return Response::json([
                     'message' => 'Student registered successfully!',
                     'student' => $student,
@@ -61,19 +66,20 @@ class StudentAuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        try {
-            $token = $this->studentService->authenticateStudent($request->email, $request->password);
+        $credentials = $request->only('email', 'password');
 
-            if ($token) {
-                return Response::json(['message' => 'Logged in successfully!', 'token' => $token], 200);
+        try {
+            if (!$token = auth('student')->attempt($credentials)) {
+                return response()->json(['error' => 'Invalid credentials'], 401);
             }
 
-            return Response::json(['message' => 'Invalid credentials.'], 401); // 401 Unauthorized
-
         } catch (\Exception $e) {
-            Log::error("Student login error: " . $e->getMessage());
-            return Response::json(['message' => 'An error occurred during login.'], 500);
+            return response()->json(['error' => 'Could not create token'], 500);
         }
+        return response()->json([
+            'message' => 'Logged in successfully!',
+            'token' => $token
+        ]);
     }
 
     /**
@@ -85,24 +91,12 @@ class StudentAuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         try {
-            /** @var \App\Models\Student|null $student */
-            $student = $request->user('sanctum'); // Get the authenticated student via Sanctum
+            JWTAuth::invalidate(JWTAuth::getToken());
 
-            if ($student) {
-                // Revoke the current token.
-                // The 'token()' method on the authenticated user returns the PersonalAccessToken instance
-                // that was used to authenticate the current request.
-                // This is a robust alternative to currentAccessToken()->delete().
-                $student->token()->delete();
-                return Response::json(['message' => 'Logged out successfully.'], 200);
-            }
-
-            return Response::json(['message' => 'No authenticated user to log out.'], 401); // 401 Unauthorized
-
-        } catch (\Exception $e) {
-            Log::error("Student logout error: " . $e->getMessage());
-            return Response::json(['message' => 'An error occurred during logout.'], 500);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to logout, please try again'], 500);
         }
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
     /**
@@ -111,10 +105,10 @@ class StudentAuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function me(Request $request): JsonResponse
-    {
-        // The 'auth:sanctum' middleware will ensure user is authenticated
-        // and attach the user model to the request.
-        return Response::json($request->user('sanctum'), 200);
-    }
+    // public function me(Request $request): JsonResponse
+    // {
+    //     // The 'auth:sanctum' middleware will ensure user is authenticated
+    //     // and attach the user model to the request.
+    //     return Response::json($request->user('sanctum'), 200);
+    // }
 }

@@ -10,14 +10,14 @@ class UpdateStudentRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        // Only the authenticated student can update their own profile,
-        // or an admin user (if you implement roles later).
-        // For now, let's allow the authenticated user to update their own profile.
-        // We'll handle checking if the authenticated user ID matches the student ID in the controller.
-        return auth('sanctum')->check();
-    }
+    // public function authorize(): bool
+    // {
+    //     // Only the authenticated student can update their own profile,
+    //     // or an admin user (if you implement roles later).
+    //     // For now, let's allow the authenticated user to update their own profile.
+    //     // We'll handle checking if the authenticated user ID matches the student ID in the controller.
+    //     return auth('sanctum')->check();
+    // }
 
     /**
      * Get the validation rules that apply to the request.
